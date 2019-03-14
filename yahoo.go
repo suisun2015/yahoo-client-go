@@ -18,10 +18,11 @@ const (
 
 // Client api client for yahoo
 type Client struct {
-	BaseURL   *url.URL
-	AppID     string
-	Verbose   bool
-	UserAgent string
+	BaseURL    *url.URL
+	AppID      string
+	Verbose    bool
+	UserAgent  string
+	HTTPClient *http.Client
 }
 
 func init() {
@@ -31,13 +32,13 @@ func init() {
 // NewShopping returns new yahoo shopping Client
 func NewShopping(appid string) *Client {
 	u, _ := url.Parse(shoppingBaseURL)
-	return &Client{u, appid, false, defaultUserAgent + appid}
+	return &Client{u, appid, false, defaultUserAgent + appid, &http.Client{}}
 }
 
 // NewAuction returns new yahoo auction client
 func NewAuction(appid string) *Client {
 	u, _ := url.Parse(auctionBaseURL)
-	return &Client{u, appid, false, defaultUserAgent + appid}
+	return &Client{u, appid, false, defaultUserAgent + appid, &http.Client{}}
 }
 
 // NewClientWithOptions returns new yahoo client
@@ -46,7 +47,7 @@ func NewClientWithOptions(appid string, rawurl string, verbose bool) (*Client, e
 	if err != nil {
 		return nil, err
 	}
-	return &Client{u, appid, verbose, defaultUserAgent + appid}, nil
+	return &Client{u, appid, verbose, defaultUserAgent + appid, &http.Client{}}, nil
 }
 
 func (c *Client) urlFor(path string) *url.URL {
@@ -71,9 +72,8 @@ func (c *Client) Request(req *http.Request) (resp *http.Response, err error) {
 		}
 	}
 
-	client := &http.Client{} // same as http.DefaultClient
-	client.Timeout = apiRequestTimeout
-	resp, err = client.Do(req)
+	c.HTTPClient.Timeout = apiRequestTimeout
+	resp, err = c.HTTPClient.Do(req)
 	if err != nil {
 		return nil, err
 	}
