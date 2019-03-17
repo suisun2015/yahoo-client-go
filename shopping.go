@@ -689,6 +689,7 @@ type ItemSearchParam struct {
 	SameDayDeadlineTo   string `json:"same_day_deadline_to,omitempty"`
 	Seller              string `json:"seller,omitempty"`
 	Sort                string `json:"sort,omitempty"`
+	Condition           string `json:"condition,omitempty"`
 }
 
 // ItemLookupParam parameters for ItemLookup
@@ -1179,6 +1180,9 @@ func (c *Client) ItemSearch(param *ItemSearchParam) (*ItemSearchResultSet, error
 	}
 	if p := param.Sort; p != "" {
 		v.Set("sort", p)
+	}
+	if p := param.Condition; p != "" {
+		v.Set("condition", p)
 	}
 
 	url := fmt.Sprintf("%s?%s", c.urlFor("/ShoppingWebService/V1/itemSearch").String(), v.Encode())
