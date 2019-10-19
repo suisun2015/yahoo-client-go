@@ -11,13 +11,13 @@ yahoo-client-go is a go client library for [yahoo japan web api](http://develope
 ## Installation
 
 ```go
-go get -u github.com/pdevty/yahoo-client-go
+go get -u github.com/suisun2015/yahoo-client-go
 ```
 
 ## Usage
 
 ```go
-import yahoo "github.com/pdevty/yahoo-client-go"
+import yahoo "github.com/suisun2015/yahoo-client-go"
 ```
 
 ```go
