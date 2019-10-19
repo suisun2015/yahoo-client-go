@@ -230,7 +230,7 @@ type ProductCategory struct {
 
 // Inventories inventories information
 type Inventories struct {
-	Inventory Inventory `xml:",omitempty"`
+	Inventory []Inventory `xml:",omitempty"`
 }
 
 // Inventory inventory information
